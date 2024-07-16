@@ -18,17 +18,30 @@ enum IssueStatus {
   Resolved
 }
 
-model Issues {
-  id            Int         @id @default(autoincrement())
-  name          String
-  outletName    String
-  problem       String
-  issuePhoto    String
-  resolvedPhoto String
-  typeOfIssue   IssueTypeStatus
-  status        IssueStatus @default(Active)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  resolvedBy    String
+model IssueCreation {
+  id         Int     @id @default(autoincrement())
+  name       String
+  outletName String
+  issues      Issues[]
+}
 
+model Issues {
+  id              Int             @id @default(autoincrement())
+  problem         String
+  issuesPictures     String[]  @default([])
+  resolvedPictures   String[]  @default([])
+  typeOfIssue     IssueTypeStatus
+  status          IssueStatus     @default(Active)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  resolvedBy      String           @default("")
+  pendingDays     Int             @default(0)
+  issueCreationId Int             @unique
+  issueCreation   IssueCreation   @relation(fields: [issueCreationId], references: [id])
+}
+
+model Machine{
+   id              Int             @id @default(autoincrement())
+   status Boolean @default(false)
+   dynamicId String @default("")
 }
