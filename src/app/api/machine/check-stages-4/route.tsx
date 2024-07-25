@@ -20,8 +20,9 @@ export async function GET(
     sendRecipeToMachine = request?.nextUrl?.searchParams?.get("receipe") as string;
     
     let response:any = await axios.get("https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/isMachineActiveReq");
+     console.log(response, "Machine Active");
 
-    if(response?.status === "Active"){
+    if(response?.data?.state === "Active"){
       let machineQueresponse:any = await axios.get("https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineQueueCountReq");
       if(parseInt(machineQueresponse?.recipeReceivedCount) < 3){
         let res =   await axios.get(`https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineRecipeRes?transactionId=${sendRecipeToMachine}`);
@@ -31,7 +32,7 @@ export async function GET(
     }
 
     return NextResponse.json(
-      {response: sendRecipeToMachine},
+      {response: response},
       { status: 200 }
     );
 
