@@ -19,7 +19,16 @@ export async function GET(
 
     sendRecipeToMachine = request?.nextUrl?.searchParams?.get("receipe") as string;
     
-    console.log(sendRecipeToMachine, "receieved from frontend");
+    let response:any = await axios.get("https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/isMachineActiveReq");
+
+    if(response?.status === "Active"){
+      let machineQueresponse:any = await axios.get("https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineQueueCountReq");
+      if(parseInt(machineQueresponse?.recipeReceivedCount) < 3){
+        let res =   await axios.get(`https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineRecipeRes?transactionId=${sendRecipeToMachine}`);
+        console.log(res, "machine response");
+        sendRecipeToMachine = "";
+      }  
+    }
 
     return NextResponse.json(
       {response: sendRecipeToMachine},
@@ -46,11 +55,11 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
         let requestBody:any = await request.json();
 
-        if(requestBody?.recipeReceivedCount < 3){
+        if(parseInt(requestBody?.recipeReceivedCount) < 3 && sendRecipeToMachine){
 
               let res =   await axios.get(`https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineRecipeRes?transactionId=${sendRecipeToMachine}`);
               console.log(res, "machine response");
-
+              sendRecipeToMachine = "";
         }
 
         console.log(requestBody, "state-4");
