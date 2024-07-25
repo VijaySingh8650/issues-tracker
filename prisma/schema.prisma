@@ -43,5 +43,6 @@ model Issues {
 model Machine{
    id              Int             @id @default(autoincrement())
    status Boolean @default(false)
-   dynamicId String @default("")
+   machineId Int @unique @default(autoincrement())
+   queueCount Int @default(0)
 }
