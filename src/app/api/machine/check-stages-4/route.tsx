@@ -32,7 +32,7 @@ export async function GET(
     }
 
     return NextResponse.json(
-      {response: machineActiveResponse},
+      {response: ""},
       { status: 200 }
     );
 
