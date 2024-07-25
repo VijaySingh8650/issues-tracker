@@ -20,7 +20,7 @@ export async function GET(
     sendRecipeToMachine = request?.nextUrl?.searchParams?.get("receipe") as string;
     
     let machineActiveResponse:any = await axios.get("https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/isMachineActiveReq");
-     console.log(response, "Machine Active");
+     console.log(machineActiveResponse, "Machine Active");
 
     if(machineActiveResponse?.data?.state === "Active"){
       let machineQueresponse:any = await axios.get("https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineQueueCountReq");
