@@ -52,6 +52,8 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
         let requestBody = await request.json();
 
+        console.log(requestBody, "state-1");
+
       
       
       return NextResponse.json({ data: requestBody }, { status: 200 });
