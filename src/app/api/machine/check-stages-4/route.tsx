@@ -1,6 +1,9 @@
 
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import axios from "axios";
+
+let sendRecipeToMachine = "";
 
 
 export async function GET(
@@ -13,22 +16,13 @@ export async function GET(
   response: NextResponse
 ) {
   try {
+
+    sendRecipeToMachine = context?.params?.id;
     
-    let res =  await prisma.machine.findFirst({
-      where: {machineId: Number(context?.params?.id)},
-    });
-   
-    if(!res){
-
-      return NextResponse.json(
-        {response: "Machine does not exist"},
-        { status: 404 }
-      );
-
-    }
+    
 
     return NextResponse.json(
-      {response: res},
+      {response: sendRecipeToMachine},
       { status: 200 }
     );
 
@@ -50,9 +44,16 @@ export async function GET(
 export async function POST(request: NextRequest, response: NextResponse) {
     try {
 
-        let requestBody = await request.json();
+        let requestBody:any = await request.json();
 
-        console.log(requestBody, "state-1");
+        if(requestBody?.recipeReceivedCount < 3){
+
+              let res =   await axios.get(`https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineRecipeRes?transactionId=${sendRecipeToMachine}`);
+              console.log(res, "machine response");
+              
+        }
+
+        console.log(requestBody, "state-4");
       
       return NextResponse.json({ data: requestBody }, { status: 200 });
   
