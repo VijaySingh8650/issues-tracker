@@ -17,7 +17,7 @@ export async function GET(
 ) {
   try {
 
-    sendRecipeToMachine = context?.params?.id;
+    sendRecipeToMachine = request?.nextUrl?.searchParams?.get("receipe") as string;
     
     console.log(sendRecipeToMachine, "receieved from frontend");
 
