@@ -9,10 +9,11 @@ const HomePage = () => {
   const id = router.id;
   const [loadStatus, setLoadStatus] = useState<boolean>(true);
   const [status, setStatus] = useState<boolean>(false);
+  const [order, setOrder] = useState<number | null>(null);
 
   const checkMachineStatus = async() => {
     
-    for(let i=0; i<500; i++){
+    for(let i=0; i<1; i++){
       try{   
         
 
@@ -48,8 +49,9 @@ const HomePage = () => {
 
   const  askQueueCountToMachine = async() => {
       try{
-        let res:any = await axios.get(`https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineQueueCountReq`);
-        console.log(res, "recipe");
+        let num:number = Math.random();
+        let res:any = await axios.get(`api/machine/check-stages-4?receipe=${num}`);
+        setOrder(num);
       }
       catch(err){
         console.log(err);
@@ -63,6 +65,10 @@ const HomePage = () => {
 
       {
         status && <p>Machine is active</p>
+      }
+
+      {
+        order && <p>Order no. - {order}</p>
       }
 
       <button onClick={()=> askQueueCountToMachine()}>Send Receipe</button>
