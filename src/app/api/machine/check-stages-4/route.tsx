@@ -19,7 +19,7 @@ export async function GET(
 
     sendRecipeToMachine = context?.params?.id;
     
-    
+    console.log(sendRecipeToMachine, "receieved from frontend");
 
     return NextResponse.json(
       {response: sendRecipeToMachine},
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
               let res =   await axios.get(`https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineRecipeRes?transactionId=${sendRecipeToMachine}`);
               console.log(res, "machine response");
-              
+
         }
 
         console.log(requestBody, "state-4");
