@@ -24,7 +24,7 @@ export async function GET(
 
     if(machineActiveResponse?.data?.state === "Active"){
       let machineQueresponse:any = await axios.get("https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineQueueCountReq");
-      if(parseInt(machineQueresponse?.recipeReceivedCount) < 3){
+      if(parseInt(machineQueresponse?.data?.recipeReceivedCount) < 3){
         let res =   await axios.get(`https://1388f8b1455b1c7b8ed7c3744b9214d3.balena-devices.com/machineRecipeRes?transactionId=${sendRecipeToMachine}`);
         console.log(res, "machine response");
         sendRecipeToMachine = "";
